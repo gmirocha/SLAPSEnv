@@ -91,6 +91,7 @@ Write-host "Getting Disk Info... $thiscnvar"
 SLA-ShowDisk $thiscnvar|ft ;
 Write-host -ForegroundColor BLUE "$LN"
 }
+
 ###################################################################################################################
 # ShowLocalAdmin
 ###################################################################################################################
@@ -98,7 +99,6 @@ Function SLA-ShowLocalAdmin($CN=$(localhost)) {
     $GLOBAL:AdminMembers=New-Object System.Collections.ArrayList
     $admins = Gwmi win32_groupuser –computer $CN
     $admins = $admins |? {$_.groupcomponent –like '*"Administrators"'}
-
     $admins |% {
         $_.partcomponent -match ".+Domain\=(.+)\,Name\=(.+)$" > $nul
         $temp = New-Object System.Object
@@ -110,7 +110,7 @@ Function SLA-ShowLocalAdmin($CN=$(localhost)) {
     }
     $AdminMembers
 }
-####
+
 ###################################################################################################################
 # xxxx 
 ###################################################################################################################
