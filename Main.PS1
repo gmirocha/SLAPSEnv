@@ -1,6 +1,7 @@
 
 ## Variables
 $SLAPSEnv_PATH='c:\users\public\SLAPSEnv'
+$SLAPSEnv_SleepTime=0.3
 
 ##
 
@@ -47,9 +48,14 @@ Param(
 
 
 if (test-path $SLAPSEnv_PATH ) {
+    foreach ($File2Set in Get-ChildItem $SLAPSEnv_PATH -Name -Filter 'SLA-WIN*.PS1') {
+    Write-Host -ForegroundColor Green "Setting $($File2Set)"
+    sleep $SLAPSEnv_SleepTime
+    . $SLAPSEnv_PATH/$File2Set
+    }
     foreach ($File2Set in Get-ChildItem $SLAPSEnv_PATH -Name -Filter 'SLA-SQL*.PS1') {
     Write-Host -ForegroundColor Green "Setting $($File2Set)"
-    sleep 0.2
+    sleep $SLAPSEnv_SleepTime
     . $SLAPSEnv_PATH/$File2Set
     }
 }
