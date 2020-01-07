@@ -1,12 +1,29 @@
 
 
 function SQLLogPurge {
+param(
+        [parameter(mandatory=$true)][string]$SCOPE="ALL"
+)
+if ($SCOPE -eq "ALL") {
 foreach ($Instance in $SQLServers|%{$_[3]}) {
 rdb "exec SP_MSforeachDB '
-use [?]; 
+use [?];
 dbcc shrinkfile(2,1)'" $Instance
+}} else {
+rdb "exec SP_MSforeachDB '
+use [?];
+dbcc shrinkfile(2,1)'" $SCOPE
 }
 }
+
+function CheckSQLAgents() {
+foreach($Instance in $SQLServers) {
+if((Get-Service -cn $Instance[0] SQL*Agent*).status -eq 'Running' ) {
+echo "Agent ok on $($Instance[0])..." } else {
+Write-Host -ForegroundColor Red "PAU NO AGENT DO $($Instance[0])..." }
+}
+}
+
 
 function DoSQLDBSvc{
 param(
