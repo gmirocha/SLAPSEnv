@@ -93,24 +93,5 @@ Write-host -ForegroundColor BLUE "$LN"
 }
 
 ###################################################################################################################
-# ShowLocalAdmin
-###################################################################################################################
-Function SLA-ShowLocalAdmin($CN=$(localhost)) {
-    $GLOBAL:AdminMembers=New-Object System.Collections.ArrayList
-    $admins = Gwmi win32_groupuser –computer $CN
-    $admins = $admins |? {$_.groupcomponent –like '*"Administrators"'}
-    $admins |% {
-        $_.partcomponent -match ".+Domain\=(.+)\,Name\=(.+)$" > $nul
-        $temp = New-Object System.Object
-        $temp | Add-Member -MemberType NoteProperty -Name "Hostname" -Value $CN
-        $temp | Add-Member -MemberType NoteProperty -Name "Domain" -Value $matches[1].trim('"')
-        $temp | Add-Member -MemberType NoteProperty -Name "UserOrGroup" -Value $matches[2].trim('"')
-        $temp | Add-Member -MemberType NoteProperty -Name "Member" -Value $($matches[1].trim('"') + '\' + $matches[2].trim('"'))
-        $GlOBAL:AdminMembers.add($temp)|Out-Null
-    }
-    $AdminMembers
-}
-
-###################################################################################################################
 # xxxx 
 ###################################################################################################################
