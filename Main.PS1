@@ -12,7 +12,7 @@ Param(
     [string]$Path,
     [string]$DestinationPath
     )
-
+    [Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"
     $baseUri = "https://api.github.com/"
     $args = "repos/$Owner/$Repository/contents/$Path"
     $wr = Invoke-WebRequest -Uri $($baseuri+$args)
@@ -56,6 +56,11 @@ if (test-path $SLAPSEnv_PATH ) {
             $content = Get-Content $_.FullName
             $content | Set-Content $_.FullName
         }
+    }
+    foreach ($File2Set in Get-ChildItem $SLAPSEnv_PATH -Name -Filter 'SLA-FORMAT*.PS1') {
+    Write-Host -ForegroundColor Green "Setting $($File2Set)"
+    sleep $SLAPSEnv_SleepTime
+    . $SLAPSEnv_PATH/$File2Set
     }
     foreach ($File2Set in Get-ChildItem $SLAPSEnv_PATH -Name -Filter 'SLA-WIN*.PS1') {
     Write-Host -ForegroundColor Green "Setting $($File2Set)"
