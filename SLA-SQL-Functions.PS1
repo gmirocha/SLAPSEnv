@@ -10,7 +10,7 @@ Function SLA-GetSQLDB-Env ($ServerInstance) {
 function SLA-RDB(){
 param(
 	[parameter(mandatory=$true)][string]$query,
-	[parameter(mandatory=$false)][string]$ONDB=$GLOBAL:SQLDB,
+	[parameter(mandatory=$true)][string]$ONDB=$GLOBAL:SQLDB,
 	[parameter(mandatory=$false)][int]$Y=25
 )
 switch(SLA-GetSQLDB-Env $ONDB){
@@ -20,10 +20,7 @@ switch(SLA-GetSQLDB-Env $ONDB){
 	default { echo "GLOBAL:SQLDB not set"; break}
 }
 try{ 
-	if("$($query)" -eq 'go') {
-		sqlcmd -E -S $ONDB -x -Y $Y 
-	} else {
-		"$($query)"|sqlcmd -E -S $ONDB -x -Y $Y
+	"$($query)"|sqlcmd -E -S $ONDB -x -Y $Y
 	}
 } CATCH {$NULL}
 MySetTerm -SCHEMA REGULAR
