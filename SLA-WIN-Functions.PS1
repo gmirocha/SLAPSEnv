@@ -91,5 +91,17 @@ Write-host -ForegroundColor BLUE "$LN"
 }
 
 ###################################################################################################################
-# xxxx 
+# SLA-NetWorkerRestartAgent 
 ###################################################################################################################
+function SLA-NetWorkerRestartAgent($server) {
+echo "Verifying status of $($server)networker agent"
+Get-Service -ComputerName $server -ServiceName nsrexecd
+echo "Stop agent"
+Get-Service -ComputerName $server -ServiceName nsrexecd|Stop-Service
+echo "Verifying status of $($server)networker agent after stop"
+Get-Service -ComputerName $server -ServiceName nsrexecd
+echo "Start agent"
+Get-Service -ComputerName $server -ServiceName nsrexecd|Start-Service
+echo "Verifying status of $($server)networker agent after start"
+Get-Service -ComputerName $server -ServiceName nsrexecd
+}
