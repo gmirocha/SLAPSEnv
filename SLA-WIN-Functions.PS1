@@ -1,3 +1,4 @@
+## General Windows Functions
 ## Internal Functions
 function WMIDateStringToDate($Bootup=$Bootup) {  
     [System.Management.ManagementDateTimeconverter]::ToDateTime($Bootup)  
