@@ -18,10 +18,7 @@ switch(SLA-GetSQLDB-Env $ONDB){
 	"ACCEPTANCE" { MySetTerm -SCHEMA QA}
 	default { echo "GLOBAL:SQLDB not set"; break}
 }
-try{ 
-	"$($query)"|sqlcmd -E -S $ONDB -x -Y $Y
-	}
-} CATCH {$NULL}
+try{ "$($query)"|sqlcmd -E -S $ONDB -x -Y $Y } CATCH {$NULL}
 MySetTerm -SCHEMA REGULAR
 }
 # Excecução direta de scripts
