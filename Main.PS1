@@ -1,3 +1,9 @@
+
+## Variables
+$SLAPSEnv_PATH='c:\users\public\SLAPSEnv'
+
+##
+
 function DownloadFilesFromRepo {
 Param(
     [string]$Owner,
@@ -40,9 +46,11 @@ Param(
 }
 
 
-
-foreach ($File2Set in Get-ChildItem C:\Users\Public\SLAPSEnv\ -Name -Filter 'SLA-SQL*.PS1') {
-. $File2Set
+if (test-path $SLAPSEnv_PATH ) {
+    foreach ($File2Set in Get-ChildItem $SLAPSEnv_PATH -Name -Filter 'SLA-SQL*.PS1') {
+    Write-Host -ForegroundColor Green "Setting $($File2Set)"
+    sleep 0.2
+    . $SLAPSEnv_PATH/$File2Set
+    }
 }
-
 
