@@ -1,6 +1,8 @@
 
-
-function SQLLogPurge {
+#######################################################################################
+# SQLLogPurge
+#######################################################################################
+function SLA-SQLLogPurge {
 param(
         [parameter(mandatory=$true)][string]$SCOPE="ALL"
 )
@@ -16,16 +18,21 @@ dbcc shrinkfile(2,1)'" $SCOPE
 }
 }
 
-function CheckSQLAgents() {
+#######################################################################################
+# CheckSQLAgents
+#######################################################################################
+function SLA-CheckSQLAgents() {
 foreach($Instance in $SQLServers) {
 if((Get-Service -cn $Instance[0] SQL*Agent*).status -eq 'Running' ) {
 echo "Agent ok on $($Instance[0])..." } else {
 Write-Host -ForegroundColor Red "PAU NO AGENT DO $($Instance[0])..." }
 }
 }
+#######################################################################################
+# SLA-DoSQLDBSvc
+#######################################################################################
 
-
-function DoSQLDBSvc{
+function SLA-DoSQLDBSvc{
 param(
 	[parameter(mandatory=$true)][string]$CN,
 	[parameter(mandatory=$false)][string][ValidateSet("STATUS","STOP","START")]$ServiceACTION='STATUS',
@@ -102,9 +109,10 @@ switch($ServiceACTION){
 }
 }
 
-
-
-function GetSQLServerHosts{
+#######################################################################################
+# SLA-GetSQLServerHosts
+#######################################################################################
+function SLA-GetSQLServerHosts{
 <#
     .SYNOPSIS
         This function access the DBMAP catalog via RestMethod and returns the sqlserver Hosts list.
@@ -128,10 +136,10 @@ if ($ENVIRONMENT -eq "ALL") {
 }
 }
 
-
-
-
-function CheckSQLAgents() {
+#######################################################################################
+# SLA-CheckSQLAgents
+#######################################################################################
+function SLA-CheckSQLAgents() {
 foreach($Instance in $SQLServers) {
 if((Get-Service -cn $Instance[0] SQL*Agent*).status -eq 'Running' ) {
 echo "Agent ok on $($Instance[0])..." } else {
@@ -139,7 +147,9 @@ Write-Host -ForegroundColor Red "PAU NO AGENT DO $($Instance[0])..." }
 }
 }
 
-
-Function ShowSQLInstUptime ($Instance) {
+#######################################################################################
+# SLA-ShowSQLInstUptime
+#######################################################################################
+Function SLA-ShowSQLInstUptime ($Instance) {
 rdb 'SELECT sqlserver_start_time FROM sys.dm_os_sys_info;' $Instance
 }
