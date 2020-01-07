@@ -28,7 +28,6 @@ foreach ($system in $computers) {
 ###################################################################################################################
 # GetNewPass
 ###################################################################################################################
-
 $VM_SPECIAL=@('_')
 $VM_NUMBERS=@(0..9)
 $VM_UPCHARS=@(0..25)
@@ -72,7 +71,6 @@ Function SLA-ShowDisk([string]$cnvar='localhost') {
 $X=get-WmiObject win32_logicaldisk -cn $cnvar |?{$_.size -ne $null } | Select Name,VolumeName,Size,FreeSpace,@{name="PCTFREE";Expression={(100/$_.size*$_.freespace).tostring('0.00')}},@{name="PCTUSED";Expression={(($_.size-$_.freespace)/$_.size*100).tostring('0.00')}} , @{name="SIZEGB";Expression={"{0:N2} GB" -f ($_.size/1024/1024/1024) }} ,@{name="FSGB";Expression={"{0:N2} GB" -f ($_.FreeSpace/1024/1024/1024)}},@{name="USEDGB";Expression={"{0:N2} GB" -f (($_.size-$_.FreeSpace)/1024/1024/1024)}}
 $X|ft
 }
-
 
 Function SLA-ShowAllInfo([string]$thiscnvar='localhost') {
 $LN="-------------------------------------------------------------------------------------------"
