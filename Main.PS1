@@ -48,6 +48,15 @@ Param(
 
 
 if (test-path $SLAPSEnv_PATH ) {
+    Get-ChildItem $SLAPSEnv_PATH  | ForEach-Object {
+        ## If contains UNIX line endings, replace with Windows line endings
+    if (Get-Content $_.FullName -Delimiter "`0" | Select-String "[^`r]`n")
+        {
+            Write-Host -ForegroundColor Blue "Converting $($_) to Windows format..."
+            $content = Get-Content $_.FullName
+            $content | Set-Content $_.FullName
+        }
+    }
     foreach ($File2Set in Get-ChildItem $SLAPSEnv_PATH -Name -Filter 'SLA-WIN*.PS1') {
     Write-Host -ForegroundColor Green "Setting $($File2Set)"
     sleep $SLAPSEnv_SleepTime
