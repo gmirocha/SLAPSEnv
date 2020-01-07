@@ -33,6 +33,7 @@ $admins = Gwmi win32_groupuser –computer $CN
 $admins = $admins |? {$_.groupcomponent –like '*"Administrators"'}
 
 $admins |% {
+##$_.partcomponent -match ".+Domain\=(.+)\,Name\=(.+)$" > $nul
 $_.partcomponent -match ".+Domain\=(.+)\,Name\=(.+)$" > $nul
 $temp = New-Object System.Object
 $temp | Add-Member -MemberType NoteProperty -Name "Hostname" -Value $CN
