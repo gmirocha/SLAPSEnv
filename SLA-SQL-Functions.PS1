@@ -2,10 +2,8 @@ set-alias RDB SLA-RDB
 #######################################################################################
 # RDB Functions
 #######################################################################################
-# Removida a opção de execução de arquivos texto, pois a função se destina
-# à execução remota de comandos simples.
 Function SLA-GetSQLDB-Env ($ServerInstance) {
-	return (listDatabaseMap -params "hostName=$($ServerInstance.Split('/')[0])&instanceName=$($ServerInstance.Split('/')[1])").environment 
+	return (listDatabaseMap -params "hostName=$($ServerInstance.Split('\')[0])&instanceName=$($ServerInstance.Split('\')[1])").environment 
 }
 
 function SLA-RDB(){
@@ -181,13 +179,6 @@ Function SLA-ShowSQLInstUptime ($Instance) {
 rdb 'SELECT sqlserver_start_time FROM sys.dm_os_sys_info;' $Instance
 }
 
-#######################################################################################
-# xxx
-#######################################################################################
-
-#######################################################################################
-# xxx
-#######################################################################################
 #######################################################################################
 # xxx
 #######################################################################################
