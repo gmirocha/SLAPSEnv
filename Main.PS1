@@ -41,3 +41,8 @@ Param(
 
 
 
+foreach ($File2Set in Get-ChildItem C:\Users\Public\SLAPSEnv\ -Name -Filter 'SLA-SQL*.PS1') {
+. $File2Set
+}
+
+
