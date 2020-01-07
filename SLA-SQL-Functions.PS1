@@ -1,3 +1,34 @@
+set-alias RDB SLA-RDB
+
+#######################################################################################
+# RDB Functions
+#######################################################################################
+Function SLA-GetSQLDB-Env ($ServerInstance) {
+	return (listDatabaseMap -params "hostName=$($ServerInstance.Split('/')[0])&instanceName=$($ServerInstance.Split('/')[1])").environment 
+}
+
+function SLA-RDB(){
+param(
+	[parameter(mandatory=$true)][string]$query,
+	[parameter(mandatory=$false)][string]$ONDB=$GLOBAL:SQLDB,
+	[parameter(mandatory=$false)][int]$Y=25
+)
+switch(SLA-GetSQLDB-Env $ONDB){
+	"PRODUCTION" { MySetTerm -SCHEMA PROD}
+	"DEVELOPMENT" { MySetTerm -SCHEMA DEV}
+	"ACCEPTANCE" { MySetTerm -SCHEMA QA}
+	default { echo "GLOBAL:SQLDB not set"; break}
+}
+try{ 
+	if("$($query)" -eq 'go') {
+		sqlcmd -E -S $ONDB -x -Y $Y 
+	} else {
+		"$($query)"|sqlcmd -E -S $ONDB -x -Y $Y
+	}
+} CATCH {$NULL}
+MySetTerm -SCHEMA REGULAR
+}
+
 #######################################################################################
 # SQLLogPurge
 #######################################################################################
